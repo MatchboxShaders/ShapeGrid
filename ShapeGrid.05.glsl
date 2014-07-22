@@ -7,38 +7,28 @@ uniform sampler2D adsk_results_pass4;
 
 uniform float rotation;
 uniform float scale;
-// float scale = 25;
 
 vec2 center = vec2(.5);
 
-vec2 unalign(vec2 st) {
-    st += center;
-    st.x /= adsk_result_frameratio;
-
-    return st;
-}
-
-vec2 align(vec2 st) {
-    st -= center;
-    st.x *= adsk_result_frameratio;
-
-    return st;
-}
 
 vec2 uniform_scale(vec2 st)
 {
-	st = align(st);
+	st -= center;
 	st = st / (scale / 100.0);
-	st = unalign(st);
+	st += center;
 
     return st;
 }
 
 vec2 rotate(vec2 st) {
-	st = align(st);
+	st -= center;
+    st.x *= adsk_result_frameratio;
+
 	mat2 rotationMatrice = mat2( cos(-rotation), -sin(-rotation), sin(-rotation), cos(-rotation) );
 	st *= rotationMatrice;
-	st = unalign(st);
+
+    st.x /= adsk_result_frameratio;
+	st += center;
 
 	return st;
 }
