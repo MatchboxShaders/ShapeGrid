@@ -36,6 +36,12 @@
       </Uniform>
       <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="25.0" Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" DisplayName="scale" Type="float" Name="scale">
       </Uniform>
+	<Uniform Inc="0.01" Tooltip="" Row="0" Col="2" Page="0" DisplayName="scale_bias" IconType="None" Type="vec2" Name="scale_bias">
+       	<SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+       	</SubUniform>
+       	<SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+    	</SubUniform>
+	</Uniform>
    </Shader>
    <Page Name="Page 1" Page="0">
       <Col Name="Column 1" Col="0" Page="0">

@@ -17,49 +17,11 @@ uniform float circle_size;
 uniform float triangle_size;
 bool shaded_triangle = false;
 
-vec2 unalign(vec2 st) {
-    st.x /= adsk_result_frameratio;
-	st += center;
-
-	return st;
-}
-
-vec2 align(vec2 st) {
-	st -= center;
-    st.x *= adsk_result_frameratio;
-
-	return st;
-}
-
-float draw_triangle(vec2 st)
+vec2 bary(vec2 pos, vec2 top, vec2 left,vec2  right)
 {
-    vec2 t = vec2(.5, triangle_size * 2.0);
-	vec2 l = t;
-    vec2 r;
-
-	float s = softness * .001;
-
-	float a1 = radians(120.0);
-
-	l = align(t);
-   	mat2 rotationMatrice = mat2( cos(a1), -sin(a1), sin(a1), cos(a1) );
-	l *= rotationMatrice;
-	l.x *= aspect;
-	l = unalign(l);
-
-	t.y -= l.y;
-	l.y = 0.0;
-
-	r.x = 1.0 - l.x;
-	r.y = l.y;
-
-	t += shape_offset;
-	l += shape_offset;
-	r += shape_offset;
-
-    vec2 v0 = t - l;
-    vec2 v1 = r - l;
-    vec2 v2 = st - l;
+	vec2 v0 = top - left;
+    vec2 v1 = right - left;
+    vec2 v2 = pos - left;
 
     float dot00 = dot(v0, v0);
     float dot01 = dot(v0, v1);
@@ -71,21 +33,55 @@ float draw_triangle(vec2 st)
     float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
     float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
+	return vec2(u,v);
+}
+
+vec2 find_corners(vec2 top)
+{
+	vec2 left = top;
+    vec2 right;
+
+	float a1 = radians(120.0);
+
+	left -= center;
+    left.x *= adsk_result_frameratio;
+
+    mat2 rotationMatrice = mat2( cos(a1), -sin(a1), sin(a1), cos(a1) );
+
+    left *= rotationMatrice;
+    left.x *= aspect;
+
+	left.x /= adsk_result_frameratio;
+    left += center;
+
+	return left;
+}
+
+
+float draw_triangle(vec2 st)
+{
     float col = 0.0;
+	float s = softness * .001;
+	vec2 left, right, top;
 
-	/*
-    if (u >= 0 && v >= 0 && u + v <= 1) {
-		if (v < .01) {
-            col = smoothstep(0.0, .01, v);
-        } else if (u + v > .98) {
-            col = smoothstep(1.0, .99, u+v);
-        } else {
-            col = 1.0;
-        }
+    top = vec2(.5, triangle_size * 2.0);
 
+	left = find_corners(top);
 
-    }
-	*/
+	top.y -= left.y;
+	left.y = 0.0;
+
+	right.x = 1.0 - left.x;
+	right.y = left.y;
+
+	top += shape_offset;
+	left += shape_offset;
+	right += shape_offset;
+
+	vec2 uv = bary(st, top, left, right);
+
+	float u = uv.x;
+	float v = uv.y;
 
 	if (shaded_triangle) {
 		if (u < .1) {
@@ -96,20 +92,18 @@ float draw_triangle(vec2 st)
 			col = v;
 		}
 	} else {
-		if (st.y <= t.y && st.x >= l.x && st.x < r.x) {
+		if (st.y <= top.y && st.x >= left.x && st.x < right.x) {
 
     		if (u >= 0.0 && v >= 0.0 && u + v <= 1.0) { // current uvs fall in between triangle's edges
 				col = 1.0;
 			}
 
-			if (u > 0.0 && u < s) { //bottom side
+			if (u > 0.0 && u < s) { // bottom side
 				col *= smoothstep(0.0, s, u);
-	
 			} 
 			
 			if (v < s && v > 0.0) { // left side
 				col *= smoothstep(0.0, s, v);
-	
 			} 
 			
 			if (u+v < 1.0 && u+v > 1.0 - s) {
@@ -125,7 +119,8 @@ float draw_triangle(vec2 st)
 
 float draw_circle(vec2 st)
 {
-	st = align(st);
+	st -= center;
+    st.x *= adsk_result_frameratio;
 	st.x /= aspect;
 	st += center;
 
