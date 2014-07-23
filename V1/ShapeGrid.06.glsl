@@ -14,7 +14,7 @@ vec2 texel = 1.0 / res;
 
 
 // PARAMETERS
-#define FXAA_QUALITY__PRESET 13
+#define FXAA_QUALITY__PRESET 39
 
 // IMPORTANT: You can find other parameters to tweak in the main() function of this shader
 
@@ -25,7 +25,7 @@ vec2 texel = 1.0 / res;
 #define FXAA_FAST_PIXEL_OFFSET 0
 #define FXAA_GATHER4_ALPHA 0
 
-#define COLOR texture1
+#define COLOR adsk_results_pass5
 uniform sampler2D COLOR;
 //uniform vec2 res;
 
@@ -90,7 +90,7 @@ uniform sampler2D COLOR;
 
 
 #ifndef FXAA_QUALITY__PRESET
-        #define FXAA_QUALITY__PRESET 13
+        #define FXAA_QUALITY__PRESET 25
 #endif
 
 
@@ -742,7 +742,7 @@ void main( void )
         //   0.50 - lower limit (sharper, less sub-pixel aliasing removal)
         //   0.25 - almost off
         //   0.00 - completely off
-        float QualitySubpix = 0.75;
+        float QualitySubpix = 1.0;
         
         // The minimum amount of local contrast required to apply algorithm.
         //   0.333 - too little (faster)

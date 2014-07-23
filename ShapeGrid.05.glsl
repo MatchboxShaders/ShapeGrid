@@ -11,7 +11,6 @@ uniform vec2 scale_bias;
 
 vec2 center = vec2(.5);
 
-
 vec2 uniform_scale(vec2 st)
 {
 	st -= center;
@@ -22,10 +21,12 @@ vec2 uniform_scale(vec2 st)
 }
 
 vec2 rotate(vec2 st) {
+	float r = radians(rotation);
+
 	st -= center;
     st.x *= adsk_result_frameratio;
 
-	mat2 rotationMatrice = mat2( cos(-rotation), -sin(-rotation), sin(-rotation), cos(-rotation) );
+	mat2 rotationMatrice = mat2( cos(-r), -sin(-r), sin(-r), cos(-r) );
 	st *= rotationMatrice;
 
     st.x /= adsk_result_frameratio;

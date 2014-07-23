@@ -1,9 +1,11 @@
+//http://www.leadwerks.com/werkspace/topic/3898-fxaa-311/
+
 #version 120
-#extension GL_ARB_shader_texture_lod : enable
+//#extension GL_ARB_shader_texture_lod : enable
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
-uniform bool aa;
+uniform float test1;
 
 //uniform sampler2D adsk_results_pass5;
 
@@ -17,6 +19,7 @@ vec2 texel = 1.0 / res;
 // PARAMETERS
 #define FXAA_QUALITY__PRESET 39
 
+
 // IMPORTANT: You can find other parameters to tweak in the main() function of this shader
 
 
@@ -26,7 +29,8 @@ vec2 texel = 1.0 / res;
 #define FXAA_FAST_PIXEL_OFFSET 0
 #define FXAA_GATHER4_ALPHA 0
 
-#define COLOR adsk_results_pass5
+
+#define COLOR texture1
 uniform sampler2D COLOR;
 //uniform vec2 res;
 
@@ -91,7 +95,7 @@ uniform sampler2D COLOR;
 
 
 #ifndef FXAA_QUALITY__PRESET
-        #define FXAA_QUALITY__PRESET 25
+        #define FXAA_QUALITY__PRESET 40
 #endif
 
 
@@ -294,6 +298,7 @@ uniform sampler2D COLOR;
         #define FXAA_QUALITY__P10 4.0
         #define FXAA_QUALITY__P11 8.0
 #endif
+
 
 
 
@@ -751,7 +756,7 @@ void main( void )
         //   0.166 - default
         //   0.125 - high quality 
         //   0.033 - very high quality (slower)
-        float QualityEdgeThreshold = 0.033;
+        float QualityEdgeThreshold = .033;
         
         // You dont need to touch theses variables it have no visible effect
         float QualityEdgeThresholdMin = 0.0;
@@ -760,10 +765,6 @@ void main( void )
         float ConsoleEdgeThresholdMin = 0.05;
         vec4  Console360ConstDir = vec4(1.0, -1.0, 0.25, -0.25);
   
-  		if (aa) {
         gl_FragColor=FxaaPixelShader(pos, ConsolePosPos, COLOR, COLOR, COLOR, rcpFrame, ConsoleRcpFrameOpt, ConsoleRcpFrameOpt2, Console360RcpFrameOpt2, QualitySubpix, QualityEdgeThreshold, QualityEdgeThresholdMin, ConsoleEdgeSharpness, ConsoleEdgeThreshold, ConsoleEdgeThresholdMin, Console360ConstDir);
-		} else {
-			gl_FragColor = texture2D(COLOR, pos);
-		}
 }
 
