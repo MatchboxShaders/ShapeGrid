@@ -3,7 +3,8 @@
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
-uniform sampler2D adsk_results_pass4;
+#define INPUT adsk_results_pass4
+uniform sampler2D INPUT;
 
 uniform float rotation;
 uniform float scale;
@@ -41,7 +42,7 @@ void main(void)
 	st = rotate(st);
 	st = uniform_scale(st);
 
-	vec4 grid = texture2D(adsk_results_pass4, st);
+	vec4 grid = texture2D(INPUT, st);
 
 	gl_FragColor = grid;
 }

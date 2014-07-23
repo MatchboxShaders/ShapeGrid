@@ -3,7 +3,7 @@
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
-uniform float softness;
+float softness = 0.0;
 
 uniform int sides;
 uniform float shape_aspect;
@@ -86,6 +86,9 @@ float draw_shape(vec2 st, vec2 center)
 	}
 
 	float bot = 0.0;
+
+	float s = softness * .001;
+
 	for (int i = 0; i < sides - 1 ; i++) {
 		if (mod(sides, 2) != 0) {
 			bot = ceil(float(sides) * .5);
@@ -104,6 +107,19 @@ float draw_shape(vec2 st, vec2 center)
 		if (uv.x >= 0.0 && uv.y >= 0.0 && uv.x + uv.y < 1.0) {
 			col += 1.0;
 		}
+
+		if (uv.x > 0.0 && uv.x < s) { // bottom side
+                col *= smoothstep(0.0, s, uv.x);
+            }
+
+            if (uv.y < s && uv.y > 0.0) { // left side
+                col *= smoothstep(0.0, s, uv.y);
+            }
+
+            if (uv.x + uv.y < 1.0 && uv.x + uv.y > 1.0 - s) {
+                col *= 1.0 - smoothstep(1.0 - s, 1.0, uv.x + uv.y); // right size
+            }
+
 
 		col = clamp(col, 0.0, 1.0);
 

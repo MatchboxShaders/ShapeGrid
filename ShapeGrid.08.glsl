@@ -1,10 +1,13 @@
 #version 120
 
 uniform float adsk_result_w, adsk_result_h;
+uniform float adsk_result_frameratio;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 #define FRONT adsk_results_pass7
 uniform sampler2D FRONT;
+
+uniform bool crosshairs;
 
 uniform float blur_amount;
 
@@ -61,7 +64,35 @@ vec4 gblur(sampler2D source)
 	return vec4(a);
 }
 
+vec4 draw_crosshairs(vec2 st)
+{
+	vec2 center = vec2(.5);
+	float valx;
+	float valy;
+
+	st.x *=  adsk_result_frameratio;
+	center.x *=  adsk_result_frameratio;
+
+	valx = pow(1.0 - abs(st.x - center.x), 200);
+	valx *= valx;
+	valy += pow(1.0 - abs(st.y - .5), 200);
+	valy *= valy;
+
+
+	valy += valx;
+
+	return vec4(valy, 0,0,valy);
+}
+
 void main(void)
 {
-	gl_FragColor = gblur(FRONT);
+	vec2 st = gl_FragCoord.xy / res;
+	vec4 result = gblur(FRONT);
+
+	vec4 crosshair = vec4(0.0);
+	if (crosshairs) {
+		crosshair = draw_crosshairs(st);
+	}
+
+	gl_FragColor = mix(result, crosshair, crosshair.a);
 }

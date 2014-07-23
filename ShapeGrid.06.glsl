@@ -1,11 +1,13 @@
 #version 120
 #extension GL_ARB_shader_texture_lod : enable
 
+#define COLOR adsk_results_pass5
+uniform sampler2D COLOR;
+
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 uniform bool aa;
 
-//uniform sampler2D adsk_results_pass5;
 
 vec2 center = vec2(.5);
 vec2 texel = 1.0 / res;
@@ -26,8 +28,6 @@ vec2 texel = 1.0 / res;
 #define FXAA_FAST_PIXEL_OFFSET 0
 #define FXAA_GATHER4_ALPHA 0
 
-#define COLOR adsk_results_pass5
-uniform sampler2D COLOR;
 //uniform vec2 res;
 
 
