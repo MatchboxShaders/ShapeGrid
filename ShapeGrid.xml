@@ -1,19 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="0" LimitInputsToTexture="True" Version="1" Description="" Name="Preset Name">
-   <Shader OutputBitDepth="Output" Index="1">
-      <Uniform Index="0" NoInput="Black" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="Front">
-      </Uniform>
-   </Shader>
-   <Shader OutputBitDepth="Output" Index="2">
-      <Uniform Index="1" NoInput="Black" Tooltip="" DisplayName="Back" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="Back">
-      </Uniform>
-   </Shader>
-   <Shader OutputBitDepth="Output" Index="3">
-      <Uniform Index="2" NoInput="White" Tooltip="" DisplayName="Matte" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="Matte">
-      </Uniform>
-   </Shader>
-
-
-
+<ShaderNodePreset SupportsAdaptiveDegradation="0" LimitInputsToTexture="True" Version="1" Description="Make Shapes - miles@noesclavo.com" Name="Shape Grid">
    <Shader OutputBitDepth="Output" Index="4">
 		<Uniform Inc="0.01" Tooltip="" Row="3" Col="0" Page="0" DisplayName="Color 1" IconType="Pick" ValueType="Colour" Type="vec3" Name="color2">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default=".281">
